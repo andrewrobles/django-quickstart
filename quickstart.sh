@@ -1,19 +1,26 @@
 read -p "Enter project name: " PROJECTNAME
 read -p "Enter app name: " APPNAME
 
+SCRIPTDIR=$(pwd)
+BASEDIR=$(pwd)/$PROJECTNAME
+APPDIR=$(pwd)/$PROJECTNAME/$APPNAME
+PROJDIR=$(pwd)/$PROJECTNAME/$PROJECTNAME
+STATICDIR=$(pwd)/$PROJECTNAME/$APPNAME/static/$APPNAME
+TEMPLATESDIR=$(pwd)/$PROJECTNAME/$APPNAME/templates/$APPNAME
+
 virtualenv venv
 source venv/bin/activate
 pip install Django
 
 django-admin startproject $PROJECTNAME
 deactivate
-mv venv $PROJECTNAME
-cd $PROJECTNAME
+mv venv $BASEDIR
+cd $BASEDIR
 source venv/bin/activate
 
 python manage.py startapp $APPNAME
 
-cd $PROJECTNAME
+cd $PROJDIR
 rm urls.py
 touch urls.py
 echo "from django.contrib import admin
@@ -24,8 +31,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 ]" > urls.py
 
-cd ../
-cd $APPNAME
+cd $APPDIR
 rm views.py
 touch views.py
 echo "from django.shortcuts import render
@@ -45,9 +51,9 @@ urlpatterns = [
 mkdir static
 cd static
 mkdir $APPNAME
-cd ../../../
-cp -r bootstrap-4.3.1-dist $PROJECTNAME/$APPNAME/static/$APPNAME
-cd $PROJECTNAME/$APPNAME
+cd $SCRIPTDIR
+cp -r bootstrap-4.3.1-dist $STATICDIR
+cd $APPDIR
 
 
 mkdir templates
