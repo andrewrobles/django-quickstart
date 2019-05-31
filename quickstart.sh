@@ -82,6 +82,18 @@ echo "{% load static %}
 </body>
 </html>" > index.html
 
+#Create file where forms will go 
+cd $APPDIR
+touch forms.py
+
+#Specify app in installed apps settings variable
+cd $SCRIPTDIR
+cp -r include_app.py $PROJDIR
+cd $PROJDIR
+python3 include_app.py $APPNAME
+rm include_app.py
+
+echo "Quickstart complete"
 
 
 
